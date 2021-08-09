@@ -18,7 +18,7 @@ Add this to your package's pubspec.yaml file:
 ### **Depend on it**
 
 ```yaml
-loading_button: '^1.0.0'
+progress_loading_button: '^1.0.0'
 ```
 
 ### **Install it**

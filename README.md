@@ -6,7 +6,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/gairick-saha/progress_loading_button.svg)](https://github.com/gairick-saha/progress_loading_button/issues)
 [![GitHub license](https://img.shields.io/github/license/gairick-saha/progress_loading_button.svg)](https://github.com/gairick-saha/progress_loading_button/blob/master/LICENSE)
 
-**loading_button** is a free and open source (MIT license) Material Flutter Button that supports variety of buttons style demands. It is designed to be easy to use and customizable.
+**progress_loading_button** is a free and open source (MIT license) Material Flutter Button that supports variety of buttons style demands. It is designed to be easy to use and customizable.
 
 ## Get started
 

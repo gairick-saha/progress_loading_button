@@ -1,8 +1,11 @@
 # progress_loading_button
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/gairick-saha/progress_loading_button.svg)
+
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/gairick-saha/progress_loading_button.svg)
+
 ![GitHub top language](https://img.shields.io/github/languages/top/gairick-saha/progress_loading_button.svg)
+
 [![GitHub issues](https://img.shields.io/github/issues/gairick-saha/progress_loading_button.svg)](https://github.com/gairick-saha/progress_loading_button/issues)
 [![GitHub license](https://img.shields.io/github/license/gairick-saha/progress_loading_button.svg)](https://github.com/gairick-saha/progress_loading_button/blob/master/LICENSE)
 
@@ -11,8 +14,6 @@
 ## Get started
 
 Add this to your package's pubspec.yaml file:
-
-### **Depend on it**
 
 ```yaml
 progress_loading_button: '^1.0.0'
@@ -84,6 +85,10 @@ enum LoadingButtonType {
   Outline,
 }
 ```
+
+## Example
+
+![](./demo/progress_loading_button.gif)
 
 ## Source
 

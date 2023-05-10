@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 enum LoadingButtonState {
@@ -6,47 +10,51 @@ enum LoadingButtonState {
 }
 
 enum LoadingButtonType {
-  Raised,
-  Flat,
+  Elevated,
+  Text,
   Outline,
 }
 
 class LoadingButton extends StatefulWidget {
+  const LoadingButton({
+    Key? key,
+    required this.defaultWidget,
+    this.loadingWidget,
+    required this.onPressed,
+    this.type = LoadingButtonType.Elevated,
+    this.color,
+    this.textcolor,
+    this.width,
+    this.height = kMinInteractiveDimension,
+    this.borderRadius = 5.0,
+    this.borderSide = BorderSide.none,
+    this.animate = true,
+    this.padding,
+  }) : super(key: key);
+
   final Widget defaultWidget;
   final Widget? loadingWidget;
-  final Function onPressed;
+  final Function? onPressed;
   final LoadingButtonType? type;
   final Color? color;
+  final Color? textcolor;
   final double? width;
   final double? height;
   final double? borderRadius;
   final BorderSide? borderSide;
-  final bool? animate;
-
-  LoadingButton({
-    Key? key,
-    required this.defaultWidget,
-    this.loadingWidget = const CircularProgressIndicator(),
-    required this.onPressed,
-    this.type = LoadingButtonType.Raised,
-    this.color = Colors.transparent,
-    this.width = double.infinity,
-    this.height = 40.0,
-    this.borderRadius = 5.0,
-    this.borderSide = BorderSide.none,
-    this.animate = true,
-  }) : super(key: key);
+  final bool animate;
+  final EdgeInsetsGeometry? padding;
 
   @override
-  _LoadingButtonState createState() => _LoadingButtonState();
+  State<LoadingButton> createState() => _LoadingButtonState();
 }
 
 class _LoadingButtonState extends State<LoadingButton>
     with TickerProviderStateMixin {
-  GlobalKey _globalKey = GlobalKey();
+  final GlobalKey _globalKey = GlobalKey();
   Animation? _anim;
   AnimationController? _animController;
-  Duration _duration = const Duration(milliseconds: 250);
+  final Duration _duration = const Duration(milliseconds: 250);
   LoadingButtonState? _state;
   double? _width;
   double? _height;
@@ -54,7 +62,7 @@ class _LoadingButtonState extends State<LoadingButton>
   BorderSide? _borderSide;
 
   @override
-  dispose() {
+  void dispose() {
     _animController?.dispose();
     super.dispose();
   }
@@ -81,114 +89,176 @@ class _LoadingButtonState extends State<LoadingButton>
 
   @override
   Widget build(BuildContext context) {
-    return PhysicalModel(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(_borderRadius!),
-      child: SizedBox(
-        key: _globalKey,
-        height: _height,
-        width: _width,
-        child: _buildChild(context),
-      ),
+    return SizedBox(
+      key: _globalKey,
+      height: _height,
+      width: _width,
+      child: _buildChild(context),
     );
   }
 
   Widget _buildChild(BuildContext context) {
-    final ButtonStyle _textbuttonStyle = TextButton.styleFrom(
-      primary: widget.color,
-      padding: const EdgeInsets.all(0.0),
+    final ButtonStyle textbuttonStyle = TextButton.styleFrom(
+      foregroundColor: widget.textcolor,
+      disabledForegroundColor: widget.textcolor,
+      padding: _state == LoadingButtonState.Processing
+          ? EdgeInsets.zero
+          : widget.padding ??
+              ButtonStyleButton.scaledPadding(
+                const EdgeInsets.symmetric(horizontal: 16),
+                const EdgeInsets.symmetric(horizontal: 8),
+                const EdgeInsets.symmetric(horizontal: 4),
+                MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
+              ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(_borderRadius!),
         side: _borderSide!,
       ),
+      splashFactory: NoSplash.splashFactory,
+      alignment: Alignment.center,
     );
-    final ButtonStyle _elevatedbuttonStyle = ElevatedButton.styleFrom(
-      primary: widget.color,
-      padding: const EdgeInsets.all(0.0),
+    final ButtonStyle elevatedbuttonStyle = ElevatedButton.styleFrom(
+      backgroundColor: widget.color,
+      disabledBackgroundColor:
+          widget.color ?? Theme.of(context).colorScheme.primary,
+      foregroundColor: widget.textcolor,
+      disabledForegroundColor:
+          widget.textcolor ?? Theme.of(context).colorScheme.surface,
+      elevation: _state! == LoadingButtonState.Processing ? 0 : null,
+      padding: _state == LoadingButtonState.Processing
+          ? EdgeInsets.zero
+          : widget.padding ??
+              ButtonStyleButton.scaledPadding(
+                const EdgeInsets.symmetric(horizontal: 16),
+                const EdgeInsets.symmetric(horizontal: 8),
+                const EdgeInsets.symmetric(horizontal: 4),
+                MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
+              ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(_borderRadius!),
         side: _borderSide!,
       ),
+      splashFactory: NoSplash.splashFactory,
+      alignment: Alignment.center,
     );
-    final ButtonStyle _outlinedbuttonStyle = OutlinedButton.styleFrom(
-      primary: widget.color,
-      padding: const EdgeInsets.all(0.0),
+    final ButtonStyle outlinedbuttonStyle = OutlinedButton.styleFrom(
+      side: BorderSide(
+        color: widget.color ?? Theme.of(context).colorScheme.primary,
+      ),
+      foregroundColor: widget.textcolor ?? widget.color,
+      disabledForegroundColor: widget.textcolor ?? widget.color,
+      padding: _state == LoadingButtonState.Processing
+          ? EdgeInsets.zero
+          : widget.padding ??
+              ButtonStyleButton.scaledPadding(
+                const EdgeInsets.symmetric(horizontal: 16),
+                const EdgeInsets.symmetric(horizontal: 8),
+                const EdgeInsets.symmetric(horizontal: 4),
+                MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
+              ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(_borderRadius!),
         side: _borderSide!,
       ),
+      splashFactory: NoSplash.splashFactory,
+      alignment: Alignment.center,
     );
 
     switch (widget.type!) {
-      case LoadingButtonType.Raised:
+      case LoadingButtonType.Elevated:
         return ElevatedButton(
-          style: _elevatedbuttonStyle,
-          child: _buildChildren(context),
+          style: elevatedbuttonStyle,
           onPressed: _onButtonPressed(),
+          child: _buildButtonChild(
+            context,
+            loadingColor:
+                widget.textcolor ?? Theme.of(context).colorScheme.surface,
+          ),
         );
-      case LoadingButtonType.Flat:
+      case LoadingButtonType.Text:
         return TextButton(
-          style: _textbuttonStyle,
-          child: _buildChildren(context),
+          style: textbuttonStyle,
           onPressed: _onButtonPressed(),
+          child: _buildButtonChild(
+            context,
+            loadingColor: widget.color ?? Theme.of(context).colorScheme.primary,
+          ),
         );
       case LoadingButtonType.Outline:
         return OutlinedButton(
-          style: _outlinedbuttonStyle,
-          child: _buildChildren(context),
+          style: outlinedbuttonStyle,
           onPressed: _onButtonPressed(),
+          child: _buildButtonChild(
+            context,
+            loadingColor: widget.color ?? Theme.of(context).colorScheme.primary,
+          ),
         );
     }
   }
 
-  Widget _buildChildren(BuildContext context) {
-    Widget ret;
+  Widget _buildButtonChild(BuildContext context,
+      {required Color loadingColor}) {
+    Widget buttonWidget;
     switch (_state!) {
       case LoadingButtonState.Default:
-        ret = widget.defaultWidget;
+        buttonWidget = widget.defaultWidget;
         break;
       case LoadingButtonState.Processing:
-        ret = widget.loadingWidget ?? widget.defaultWidget;
+        buttonWidget = _buildLoadingIndicator(context, color: loadingColor);
         break;
     }
-    return ret;
+    return buttonWidget;
   }
 
-  VoidCallback _onButtonPressed() {
-    return () async {
-      if (_state != LoadingButtonState.Default) {
-        return;
-      }
+  Widget _buildLoadingIndicator(BuildContext context, {required Color color}) {
+    return widget.loadingWidget ??
+        (!kIsWeb && Platform.isIOS
+            ? CupertinoActivityIndicator(
+                color: color,
+              )
+            : CircularProgressIndicator(
+                color: color,
+                backgroundColor: Colors.transparent,
+              ));
+  }
 
-      VoidCallback? onDefault;
-      if (widget.animate!) {
-        _toProcessing();
-        _forward((status) {
-          if (status == AnimationStatus.dismissed) {
-            _toDefault();
-            if (onDefault != null && onDefault is VoidCallback) {
-              onDefault();
+  VoidCallback? _onButtonPressed() {
+    return _state == LoadingButtonState.Processing
+        ? null
+        : () async {
+            if (_state != LoadingButtonState.Default) {
+              return;
             }
-          }
-        });
-        onDefault = await widget.onPressed();
-        _reverse();
-      } else {
-        _toProcessing();
-        onDefault = await widget.onPressed();
-        _toDefault();
-        if (onDefault != null && onDefault is VoidCallback) {
-          onDefault();
-        }
-      }
-    };
+
+            VoidCallback? onDefault;
+            if (widget.animate) {
+              _toProcessing();
+              _forward((status) {
+                if (status == AnimationStatus.dismissed) {
+                  _toDefault();
+                  if (onDefault != null) {
+                    onDefault();
+                  }
+                }
+              });
+              onDefault =
+                  widget.onPressed == null ? null : await widget.onPressed!();
+              _reverse();
+            } else {
+              _toProcessing();
+              onDefault =
+                  widget.onPressed == null ? null : await widget.onPressed!();
+              _toDefault();
+              if (onDefault != null) {
+                onDefault();
+              }
+            }
+          };
   }
 
-  void _toProcessing() {
-    setState(() {
-      _state = LoadingButtonState.Processing;
-    });
-  }
+  void _toProcessing() => setState(() {
+        _state = LoadingButtonState.Processing;
+      });
 
   void _toDefault() {
     if (mounted) {

@@ -34,7 +34,7 @@ class LoadingButton extends StatefulWidget {
 
   final Widget defaultWidget;
   final Widget? loadingWidget;
-  final Function? onPressed;
+  final Future Function()? onPressed;
   final LoadingButtonType? type;
   final Color? color;
   final Color? textcolor;

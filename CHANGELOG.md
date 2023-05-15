@@ -18,3 +18,7 @@
 
 * LoadingButtonTypes renamed from Raised to Elevated and Flat to Text
 * loadingWidget is now nullable by default it will show default loading widget
+
+## 1.1.6
+
+* Minor bug fixes

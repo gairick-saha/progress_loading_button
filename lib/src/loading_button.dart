@@ -79,24 +79,26 @@ class _LoadingButtonState extends State<LoadingButton>
     super.initState();
   }
 
-  @override
-  void didUpdateWidget(covariant LoadingButton oldWidget) {
-    if (oldWidget.width != widget.width ||
-        oldWidget.height != widget.height ||
-        oldWidget.borderRadius != widget.borderRadius ||
-        oldWidget.borderSide != widget.borderSide) {
-      _reset();
-    }
-    super.didUpdateWidget(oldWidget);
-  }
+  // @override
+  // void didUpdateWidget(covariant LoadingButton oldWidget) {
+  //   if (oldWidget.width != widget.width ||
+  //       oldWidget.height != widget.height ||
+  //       oldWidget.borderRadius != widget.borderRadius ||
+  //       oldWidget.borderSide != widget.borderSide) {
+  //     _reset();
+  //   }
+  //   super.didUpdateWidget(oldWidget);
+  // }
 
   void _reset() {
-    _state = LoadingButtonState.Default;
-    _width = widget.width;
-    _height = widget.height;
-    _borderRadius = widget.borderRadius;
-    _borderSide = widget.borderSide;
-    setState(() {});
+    if (mounted) {
+      _state = LoadingButtonState.Default;
+      _width = widget.width;
+      _height = widget.height;
+      _borderRadius = widget.borderRadius;
+      _borderSide = widget.borderSide;
+      setState(() {});
+    }
   }
 
   @override

@@ -79,12 +79,24 @@ class _LoadingButtonState extends State<LoadingButton>
     super.initState();
   }
 
+  @override
+  void didUpdateWidget(covariant LoadingButton oldWidget) {
+    if (oldWidget.width != widget.width ||
+        oldWidget.height != widget.height ||
+        oldWidget.borderRadius != widget.borderRadius ||
+        oldWidget.borderSide != widget.borderSide) {
+      _reset();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
   void _reset() {
     _state = LoadingButtonState.Default;
     _width = widget.width;
     _height = widget.height;
     _borderRadius = widget.borderRadius;
     _borderSide = widget.borderSide;
+    setState(() {});
   }
 
   @override
@@ -142,9 +154,10 @@ class _LoadingButtonState extends State<LoadingButton>
       alignment: Alignment.center,
     );
     final ButtonStyle outlinedbuttonStyle = OutlinedButton.styleFrom(
-      side: BorderSide(
-        color: widget.color ?? Theme.of(context).colorScheme.primary,
-      ),
+      side: _borderSide ??
+          BorderSide(
+            color: widget.color ?? Theme.of(context).colorScheme.primary,
+          ),
       foregroundColor: widget.textcolor ?? widget.color,
       disabledForegroundColor: widget.textcolor ?? widget.color,
       padding: _state == LoadingButtonState.Processing

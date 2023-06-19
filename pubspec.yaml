@@ -1,6 +1,6 @@
 name: progress_loading_button
 description: A Material Flutter Button that supports variety of button styles. It is designed to be easy to use and customizable.
-version: 1.1.6
+version: 1.1.7
 homepage: https://github.com/gairick-saha/progress_loading_button.git
 
 environment:

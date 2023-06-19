@@ -22,3 +22,7 @@
 ## 1.1.6
 
 * Minor bug fixes
+
+## 1.1.7
+
+* Minor bug fixes

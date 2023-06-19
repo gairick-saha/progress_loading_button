@@ -63,14 +63,9 @@ class _LoadingButtonState extends State<LoadingButton>
 
   @override
   void dispose() {
+    _reset();
     _animController?.dispose();
     super.dispose();
-  }
-
-  @override
-  void deactivate() {
-    _reset();
-    super.deactivate();
   }
 
   @override
@@ -79,16 +74,16 @@ class _LoadingButtonState extends State<LoadingButton>
     super.initState();
   }
 
-  // @override
-  // void didUpdateWidget(covariant LoadingButton oldWidget) {
-  //   if (oldWidget.width != widget.width ||
-  //       oldWidget.height != widget.height ||
-  //       oldWidget.borderRadius != widget.borderRadius ||
-  //       oldWidget.borderSide != widget.borderSide) {
-  //     _reset();
-  //   }
-  //   super.didUpdateWidget(oldWidget);
-  // }
+  @override
+  void didUpdateWidget(covariant LoadingButton oldWidget) {
+    if (oldWidget.width != widget.width ||
+        oldWidget.height != widget.height ||
+        oldWidget.borderRadius != widget.borderRadius ||
+        oldWidget.borderSide != widget.borderSide) {
+      _reset();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
 
   void _reset() {
     if (mounted) {

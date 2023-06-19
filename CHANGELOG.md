@@ -34,3 +34,7 @@
 ## 1.1.9
 
 * Minor bug fixes
+
+## 2.0.0
+
+* Minor bug fixes

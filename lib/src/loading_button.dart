@@ -85,14 +85,16 @@ class _LoadingButtonState extends State<LoadingButton>
     super.didUpdateWidget(oldWidget);
   }
 
-  void _reset() {
+  void _reset({bool isDisposed = false}) {
     if (mounted) {
       _state = LoadingButtonState.Default;
       _width = widget.width;
       _height = widget.height;
       _borderRadius = widget.borderRadius;
       _borderSide = widget.borderSide;
-      setState(() {});
+      if (!isDisposed) {
+        setState(() {});
+      }
     }
   }
 

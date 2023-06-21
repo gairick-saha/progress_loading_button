@@ -63,7 +63,7 @@ class _LoadingButtonState extends State<LoadingButton>
 
   @override
   void dispose() {
-    _reset();
+    _reset(isDisposed: true);
     _animController?.dispose();
     super.dispose();
   }
